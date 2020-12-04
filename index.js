@@ -51,18 +51,18 @@ const start = (aruga = new Client()) => {
         // kondisi ketika seseorang diinvite/join group lewat link
         if (event.action === 'add' && event.who !== host && isWelcome) {
 			await aruga.sendFileFromUrl(event.chat, profile, 'profile.jpg', '')
-            await aruga.sendTextWithMentions(event.chat, `Hello, Welcome to the group @${event.who.replace('@c.us', '')} \n\nHave fun with us✨`)
+            await aruga.sendTextWithMentions(event.chat, `Bienvenido al grupo: @${event.who.replace('@c.us', '')} \n\nSera genial tenerte aqui✨`)
         }
         // kondisi ketika seseorang dikick/keluar dari group
         if (event.action === 'remove' && event.who !== host) {
 			await aruga.sendFileFromUrl(event.chat, profile, 'profile.jpg', '')
-            await aruga.sendTextWithMentions(event.chat, `Good bye @${event.who.replace('@c.us', '')}, We'll miss you✨`)
+            await aruga.sendTextWithMentions(event.chat, `Una puta menos: @${event.who.replace('@c.us', '')}, Le tenia miedo al exito✨`)
         }
     })
 
     aruga.onIncomingCall(async (callData) => {
         // ketika seseorang menelpon nomor bot akan mengirim pesan
-        await aruga.sendText(callData.peerJid, 'Maaf sedang tidak bisa menerima panggilan.\n\n-bot')
+        await aruga.sendText(callData.peerJid, 'Mira puta, no acepto llamadas .\n\n-bot')
         .then(async () => {
             // bot akan memblock nomor itu
             await aruga.contactBlock(callData.peerJid)
