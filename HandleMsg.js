@@ -144,11 +144,11 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'menu':
         case 'help':
             await aruga.sendText(from, menuId.textMenu(pushname))
-            .then(() => ((isGroupMsg) && (isGroupAdmins)) ? aruga.sendText(from, `Menu Admin Grup: *${prefix}menuadmin*`) : null)
+            .then(() => ((isGroupMsg) && (isGroupAdmins)) ? aruga.sendText(from, `Menu admin: *${prefix}menuadmin*`) : null)
             break
         case 'menuadmin':
-            if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
-            if (!isGroupAdmins) return aruga.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
+            if (!isGroupMsg) return aruga.reply(from, 'Lo sentimos, este comando solo se puede usar dentro del grupo!', id)
+            if (!isGroupAdmins) return aruga.reply(from, 'Falló, este comando solo puede ser utilizado por administradores de grupo!', id)
             await aruga.sendText(from, menuId.textAdmin())
             break
         case 'donate':
@@ -157,10 +157,10 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         case 'ownerbot':
             await aruga.sendContact(from, ownerNumber)
-            .then(() => aruga.sendText(from, 'Jika kalian ingin request fitur silahkan chat nomor owner!'))
+            .then(() => aruga.sendText(from, 'Este es mi creador, tienes problemas? contactame en mi red oficial \nhttps://flashlight.my.id/Ferhacks'))
             break
         case 'join':
-            if (args.length == 0) return aruga.reply(from, `Jika kalian ingin mengundang bot kegroup silahkan invite atau dengan\nketik ${prefix}join [link group]`, id)
+            if (args.length == 0) return aruga.reply(from, `Si quieres que me una a tu grupo via link\nenvia ${prefix}join [link group]`, id)
             let linkgrup = body.slice(6)
             let islink = linkgrup.match(/(https:\/\/chat.whatsapp.com)/gi)
             let chekgrup = await aruga.inviteInfo(linkgrup)
@@ -169,18 +169,18 @@ module.exports = HandleMsg = async (aruga, message) => {
                 await aruga.joinGroupViaLink(linkgrup)
                       .then(async () => {
                           await aruga.sendText(from, 'Berhasil join grup via link!')
-                          await aruga.sendText(chekgrup.id, `Hai minna~, Im Aruga BOT. To find out the commands on this bot type ${prefix}menu`)
+                          await aruga.sendText(chekgrup.id, `hola. \nsoy el nuevo bot de vuestro grupo, no olvides darme admin y ver los comandos con: ${prefix}menu`)
                       })
             } else {
                 let cgrup = await aruga.getAllGroups()
                 if (cgrup.length > groupLimit) return aruga.reply(from, `Sorry, the group on this bot is full\nMax Group is: ${groupLimit}`, id)
-                if (cgrup.size < memberLimit) return aruga.reply(from, `Sorry, BOT wil not join if the group members do not exceed ${memberLimit} people`, id)
+                if (cgrup.size < memberLimit) return aruga.reply(from, `Lo sentimos, el bot se sale si no pasan los  ${memberLimit} miembros`, id)
                 await aruga.joinGroupViaLink(linkgrup)
                       .then(async () =>{
-                          await aruga.reply(from, 'Berhasil join grup via link!', id)
+                          await aruga.reply(from, 'Me he unido a tu grupo!', id)
                       })
                       .catch(() => {
-                          aruga.reply(from, 'Gagal!', id)
+                          aruga.reply(from, 'Ha fallado!', id)
                       })
             }
             break
@@ -188,7 +188,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             const loadedMsg = await aruga.getAmountOfLoadedMessages()
             const chatIds = await aruga.getAllChatIds()
             const groups = await aruga.getAllGroups()
-            aruga.sendText(from, `Status :\n- *${loadedMsg}* Loaded Messages\n- *${groups.length}* Group Chats\n- *${chatIds.length - groups.length}* Personal Chats\n- *${chatIds.length}* Total Chats`)
+            aruga.sendText(from, `Status :\n- *${loadedMsg}* mensajes\n- *${groups.length}* Grupos\n- *${chatIds.length - groups.length}* Privados\n- *${chatIds.length}* Total de chats`)
             break
         }
 
@@ -246,15 +246,15 @@ module.exports = HandleMsg = async (aruga, message) => {
                         })
                     })
                   } else {
-                    aruga.reply(from, `[❗] Kirim gif dengan caption *${prefix}stickergif* max 10 sec!`, id)
+                    aruga.reply(from, `[❗] Este comando ha sido descontinuado.. usa  *${prefix}stickergiphy* !`, id)
                    }
                 } else {
-		    aruga.reply(from, `[❗] Kirim gif dengan caption *${prefix}stickergif*`, id)
+		    aruga.reply(from, `[❗] Este comando ha sido descontinuado.. usa  *${prefix}stickergiphy* !`, id)
 	        }
             break
         case 'stikergiphy':
         case 'stickergiphy':
-            if (args.length !== 1) return aruga.reply(from, `Maaf, format pesan salah.\nKetik pesan dengan ${prefix}stickergiphy <link_giphy>`, id)
+            if (args.length !== 1) return aruga.reply(from, `Utilizacion:\nEnvia ${prefix}stickergiphy <link_giphy>`, id)
             const isGiphy = url.match(new RegExp(/https?:\/\/(www\.)?giphy.com/, 'gi'))
             const isMediaGiphy = url.match(new RegExp(/https?:\/\/media.giphy.com\/media/, 'gi'))
             if (isGiphy) {
@@ -263,7 +263,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 const giphyCode = getGiphyCode[0].replace(/[-\/]/gi, '')
                 const smallGifUrl = 'https://media.giphy.com/media/' + giphyCode + '/giphy-downsized.gif'
                 aruga.sendGiphyAsSticker(from, smallGifUrl).then(() => {
-                    aruga.reply(from, 'Here\'s your sticker')
+                    aruga.reply(from, 'Sticker hecho')
                     console.log(`Sticker Processed for ${processTime(t, moment())} Second`)
                 }).catch((err) => console.log(err))
             } else if (isMediaGiphy) {
@@ -272,14 +272,14 @@ module.exports = HandleMsg = async (aruga, message) => {
                 const smallGifUrl = url.replace(gifUrl[0], 'giphy-downsized.gif')
                 aruga.sendGiphyAsSticker(from, smallGifUrl)
                 .then(() => {
-                    aruga.reply(from, 'Here\'s your sticker')
+                    aruga.reply(from, 'Sticker hecho')
                     console.log(`Sticker Processed for ${processTime(t, moment())} Second`)
                 })
                 .catch(() => {
-                    aruga.reply(from, `Ada yang error!`, id)
+                    aruga.reply(from, `[❗] Ha fallado`, id)
                 })
             } else {
-                await aruga.reply(from, 'Maaf, command sticker giphy hanya bisa menggunakan link dari giphy.  [Giphy Only]', id)
+                await aruga.reply(from, '[❗]Ese link no parece un link de giphy..  [Solo soporto Giphy]', id)
             }
             break
         case 'meme':
@@ -292,13 +292,13 @@ module.exports = HandleMsg = async (aruga, message) => {
                 const ImageBase64 = await meme.custom(getUrl, top, bottom)
                 aruga.sendFile(from, ImageBase64, 'image.png', '', null, true)
                     .then(() => {
-                        aruga.reply(from, 'Ini makasih!',id)
+                        aruga.reply(from, 'Meme hecho',id)
                     })
                     .catch(() => {
-                        aruga.reply(from, 'Ada yang error!')
+                        aruga.reply(from, '[❗]Algo ha fallado')
                     })
             } else {
-                await aruga.reply(from, `Tidak ada gambar! Silahkan kirim gambar dengan caption ${prefix}meme <teks_atas> | <teks_bawah>\ncontoh: ${prefix}meme teks atas | teks bawah`, id)
+                await aruga.reply(from, `[❗] No se encontro texto/imagen ${prefix}meme <texto 1> | <texto 2>\nEjemplo: ${prefix}meme Me cojo | a tu vieja`, id)
             }
             break
         case 'quotemaker':
@@ -312,7 +312,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                     const hasilqmaker = await images.quote(quotes, author, theme)
                     aruga.sendFileFromUrl(from, `${hasilqmaker}`, '', 'Ini kak..', id)
                 } catch {
-                    aruga.reply('Yahh proses gagal, kakak isinya sudah benar belum?..', id)
+                    aruga.reply('Bueno, el proceso falló, hermano, ¿es correcto todavía?', id)
                 }
             } else {
                 aruga.reply(from, `Pemakaian ${prefix}quotemaker |isi quote|author|theme\n\ncontoh: ${prefix}quotemaker |aku sayang kamu|-aruga|random\n\nuntuk theme nya pakai random ya kak..`)
@@ -324,7 +324,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             const nulisp = await rugaapi.tulis(nulisq)
             await aruga.sendImage(from, `${nulisp}`, '', 'Nih...', id)
             .catch(() => {
-                aruga.reply(from, 'Ada yang Error!', id)
+                aruga.reply(from, '[❗] Hubo un error!', id)
             })
             break
 
@@ -338,7 +338,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                         hehex += '╠➥ '
                         hehex += response.data.data[i].name.transliteration.id.toLowerCase() + '\n'
                             }
-                        hehex += '╚═〘 *A R U G A  B O T* 〙'
+                        hehex += '╚═〘 *L O L  B O T* 〙'
                     aruga.reply(from, hehex, id)
                 })
             } catch(err) {
@@ -600,24 +600,24 @@ module.exports = HandleMsg = async (aruga, message) => {
 
         //Random Images
         case 'anime':
-            if (args.length == 0) return aruga.reply(from, `Untuk menggunakan ${prefix}anime\nSilahkan ketik: ${prefix}anime [query]\nContoh: ${prefix}anime random\n\nquery yang tersedia:\nrandom, waifu, husbu, neko`, id)
+            if (args.length == 0) return aruga.reply(from, `Buscador de fotos anime ${prefix}anime\nTipo de busqueda:: ${prefix}anime [tipo]\nEjemplo: ${prefix}anime random\n\nTipos de anime:\nrandom, waifu, husbu, neko`, id)
             if (args[0] == 'random' || args[0] == 'waifu' || args[0] == 'husbu' || args[0] == 'neko') {
                 fetch('https://raw.githubusercontent.com/ArugaZ/grabbed-results/main/random/anime/' + args[0] + '.txt')
                 .then(res => res.text())
                 .then(body => {
                     let randomnime = body.split('\n')
                     let randomnimex = randomnime[Math.floor(Math.random() * randomnime.length)]
-                    aruga.sendFileFromUrl(from, randomnimex, '', 'Nee..', id)
+                    aruga.sendFileFromUrl(from, randomnimex, '', 'eh..', id)
                 })
                 .catch(() => {
-                    aruga.reply(from, 'Ada yang Error!', id)
+                    aruga.reply(from, '[❗] Algo ha fallado', id)
                 })
             } else {
                 aruga.reply(from, `Maaf query tidak tersedia. Silahkan ketik ${prefix}anime untuk melihat list query`)
             }
             break
         case 'kpop':
-            if (args.length == 0) return aruga.reply(from, `Untuk menggunakan ${prefix}kpop\nSilahkan ketik: ${prefix}kpop [query]\nContoh: ${prefix}kpop bts\n\nquery yang tersedia:\nblackpink, exo, bts`, id)
+            if (args.length == 0) return aruga.reply(from, `Con que fan de kpop eh? ${prefix}kpop\nPuedes buscar tipos de kpop : ${prefix}kpop [tipo]\nEjemplo: ${prefix}kpop bts\n\nTipos:\nblackpink, exo, bts`, id)
             if (args[0] == 'blackpink' || args[0] == 'exo' || args[0] == 'bts') {
                 fetch('https://raw.githubusercontent.com/ArugaZ/grabbed-results/main/random/kpop/' + args[0] + '.txt')
                 .then(res => res.text())
@@ -627,28 +627,28 @@ module.exports = HandleMsg = async (aruga, message) => {
                     aruga.sendFileFromUrl(from, randomkpopx, '', 'Nee..', id)
                 })
                 .catch(() => {
-                    aruga.reply(from, 'Ada yang Error!', id)
+                    aruga.reply(from, '[❗] Hubo un error', id)
                 })
             } else {
-                aruga.reply(from, `Maaf query tidak tersedia. Silahkan ketik ${prefix}kpop untuk melihat list query`)
+                aruga.reply(from, `Ese no es un tipo de kpop: ve la lista con ${prefix}kpop`)
             }
             break
         case 'memes':
             const randmeme = await meme.random()
             aruga.sendFileFromUrl(from, randmeme, '', '', id)
             .catch(() => {
-                aruga.reply(from, 'Ada yang Error!', id)
+                aruga.reply(from, '[❗] Hubo un error!', id)
             })
             break
         
         // Search Any
         case 'images':
-            if (args.length == 0) return aruga.reply(from, `Untuk mencari gambar di pinterest\nketik: ${prefix}images [search]\ncontoh: ${prefix}images naruto`, id)
+            if (args.length == 0) return aruga.reply(from, `Te busco imagenes\nEjemplo: ${prefix}images [buscar]\nEjemplo: ${prefix}images Aiden_pearce\n\n(recuerda remplazar los espacios con "_" asi como el ejemplo)`, id)
             const cariwall = body.slice(8)
             const hasilwall = await images.fdci(cariwall)
             await aruga.sendFileFromUrl(from, hasilwall, '', '', id)
             .catch(() => {
-                aruga.reply(from, 'Ada yang Error!', id)
+                aruga.reply(from, '[❗] Hubo un error', id)
             })
             break
         case 'sreddit':
@@ -678,11 +678,11 @@ module.exports = HandleMsg = async (aruga, message) => {
                     for (let i = 0; i < res.links.length; i++) {
                         heheq += `${res.links[i]}\n`
                     }
-                    aruga.reply(from, `Title: ${res.title}\n\nLink:\n${heheq}\nmasih tester bntr :v`)
+                    aruga.reply(from, `Title: ${res.title}\n\nLink:\n${heheq}\nDe nada, puta`)
                 })
             })
             .catch(() => {
-                aruga.reply(from, 'Ada yang Error!', id)
+                aruga.reply(from, '[❗] Hubo un error', id)
             })
             break
         case 'stalkig':
@@ -717,7 +717,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (args.length == 0) return aruga.reply(from, `Untuk mencari lirik dari sebuah lagu\bketik: ${prefix}lirik [judul_lagu]`, id)
             rugaapi.lirik(body.slice(7))
             .then(async (res) => {
-                await aruga.reply(from, `Lirik Lagu: ${body.slice(7)}\n\n${res}`, id)
+                await aruga.reply(from, `Letra: ${body.slice(7)}\n\n${res}`, id)
             })
             break
         case 'chord':
@@ -753,7 +753,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 				})
             })
             .catch(() => {
-                aruga.reply(from, 'Ada yang Error!', id)
+                aruga.reply(from, '[❗] Hubo un error', id)
             })
             break
 		case 'movie':
@@ -773,7 +773,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 }
                 const fetch = require('node-fetch')
                 const imgBS4 = `data:${mimetype};base64,${mediaData.toString('base64')}`
-                aruga.reply(from, 'Searching....', id)
+                aruga.reply(from, 'Buscando por ti....', id)
                 fetch('https://trace.moe/api/search', {
                     method: 'POST',
                     body: JSON.stringify({ image: imgBS4 }),
@@ -789,17 +789,17 @@ module.exports = HandleMsg = async (aruga, message) => {
                     if (similarity < 0.92) {
                     	teks = '*Saya memiliki keyakinan rendah dalam hal ini* :\n\n'
                     }
-                    teks += `➸ *Title Japanese* : ${title}\n➸ *Title chinese* : ${title_chinese}\n➸ *Title Romaji* : ${title_romaji}\n➸ *Title English* : ${title_english}\n`
-                    teks += `➸ *R-18?* : ${is_adult}\n`
+                    teks += `➸ *Titulo japones* : ${title}\n➸ *Titulo chino* : ${title_chinese}\n➸ *Titulo Romaji* : ${title_romaji}\n➸ *titulo ingles* : ${title_english}\n`
+                    teks += `➸ *Es nsfw?* : ${is_adult}\n`
                     teks += `➸ *Eps* : ${episode.toString()}\n`
-                    teks += `➸ *Kesamaan* : ${(similarity * 100).toFixed(1)}%\n`
+                    teks += `➸ *Coincidencia* : ${(similarity * 100).toFixed(1)}%\n`
                     var video = `https://media.trace.moe/video/${anilist_id}/${encodeURIComponent(filename)}?t=${at}&token=${tokenthumb}`;
                     aruga.sendFileFromUrl(from, video, 'anime.mp4', teks, id).catch(() => {
                         aruga.reply(from, teks, id)
                     })
                 })
                 .catch(() => {
-                    aruga.reply(from, 'Ada yang Error!', id)
+                    aruga.reply(from, '[❗] Hubo un error!', id)
                 })
             } else {
 				aruga.reply(from, `Maaf format salah\n\nSilahkan kirim foto dengan caption ${prefix}whatanime\n\nAtau reply foto dengan caption ${prefix}whatanime`, id)
@@ -833,7 +833,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             const quoteText = quotedMsg.type == 'chat' ? quotedMsg.body : quotedMsg.type == 'image' ? quotedMsg.caption : ''
             translate(quoteText, args[0])
                 .then((result) => aruga.sendText(from, result))
-                .catch(() => aruga.sendText(from, 'Error, Kode bahasa salah.'))
+                .catch(() => aruga.sendText(from, 'Error, Codigo incorrecto o servidor caido.'))
             break
 		case 'covidindo':
 			rugaapi.covidindo()
