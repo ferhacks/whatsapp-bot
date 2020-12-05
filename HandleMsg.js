@@ -1224,7 +1224,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 }
 
 //Hentai
-        case '!nsfw':
+        case 'nsfw':
             if (!isGroupMsg) return client.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             if (!isGroupAdmins) return client.reply(from, 'Perintah ini hanya bisa di gunakan oleh Admin group!', id)
             if (args.length === 1) return client.reply(from, 'Pilih enable atau disable!', id)
@@ -1240,11 +1240,11 @@ module.exports = HandleMsg = async (aruga, message) => {
                 client.reply(from, 'Pilih enable atau disable udin!', id)
             }
             break
-        case '!nsfwmenu':
+        case 'nsfwmenu':
             if (!isNsfw) return
             client.reply(from, '1. !randomHentai\n2. !randomNsfwNeko', id)
             break
-	    case '!randomhentai':
+	    case 'randomhentai':
             if (isGroupMsg) {
                 if (!isNsfw) return client.reply(from, 'Command/Perintah NSFW belum di aktifkan di group ini!', id)
                 const hentai = await randomNimek('hentai')
