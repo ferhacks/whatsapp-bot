@@ -1243,8 +1243,9 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'nsfwmenu':
             if (!isNsfw) return
             client.reply(from, '1. !randomHentai\n2. !randomNsfwNeko', id)
+ 	    }
             break
-	    case 'randomhentai':
+	case 'randomhentai':
             if (isGroupMsg) {
                 if (!isNsfw) return client.reply(from, 'Command/Perintah NSFW belum di aktifkan di group ini!', id)
                 const hentai = await randomNimek('hentai')
