@@ -515,7 +515,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                     var ext = '.jpg'
                 }
                 client.sendFileFromUrl(from, hentai, `Hentai${ext}`, 'Hentai!', id)
-                break
+            break
         //Media
         case 'ytmp3':
             if (args.length == 0) return aruga.reply(from, `Untuk mendownload lagu dari youtube\nketik: ${prefix}ytmp3 [link_yt]`, id)
