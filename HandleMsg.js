@@ -484,6 +484,38 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
+	//Hentai
+        case '!nsfw':
+            if (!isGroupMsg) return client.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (!isGroupAdmins) return client.reply(from, 'Perintah ini hanya bisa di gunakan oleh Admin group!', id)
+            if (args.length === 1) return client.reply(from, 'Pilih enable atau disable!', id)
+            if (args[1].toLowerCase() === 'enable') {
+                nsfw_.push(chat.id)
+                fs.writeFileSync('./lib/NSFW.json', JSON.stringify(nsfw_))
+                client.reply(from, 'NSWF Command berhasil di aktifkan di group ini! kirim perintah *!nsfwMenu* untuk mengetahui menu', id)
+            } else if (args[1].toLowerCase() === 'disable') {
+                nsfw_.splice(chat.id, 1)
+                fs.writeFileSync('./lib/NSFW.json', JSON.stringify(nsfw_))
+                client.reply(from, 'NSFW Command berhasil di nonaktifkan di group ini!', id)
+            } else {
+                client.reply(from, 'Pilih enable atau disable udin!', id)
+            }
+            break
+        case '!nsfwmenu':
+            if (!isNsfw) return
+            client.reply(from, '1. !randomHentai\n2. !randomNsfwNeko', id)
+            break
+	    case '!randomhentai':
+            if (isGroupMsg) {
+                if (!isNsfw) return client.reply(from, 'Command/Perintah NSFW belum di aktifkan di group ini!', id)
+                const hentai = await randomNimek('hentai')
+                if (hentai.endsWith('.png')) {
+                    var ext = '.png'
+                } else {
+                    var ext = '.jpg'
+                }
+                client.sendFileFromUrl(from, hentai, `Hentai${ext}`, 'Hentai!', id)
+                break
         //Media
         case 'ytmp3':
             if (args.length == 0) return aruga.reply(from, `Untuk mendownload lagu dari youtube\nketik: ${prefix}ytmp3 [link_yt]`, id)
